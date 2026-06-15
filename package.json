@@ -1,0 +1,32 @@
+{
+    "name": "dyb-remote-demo",
+    "version": "1.0.0",
+    "description": "Dock Your Boat Remote Control Demo - TypeScript Proof of Concept",
+    "main": "dist/index.js",
+    "scripts": {
+        "dev": "ts-node src/index.ts",
+        "wheel": "ts-node src/wheel-readout.ts",
+        "probe": "ts-node src/wheel-probe.ts",
+        "decode": "ts-node src/wheel-decode.ts",
+        "drive": "ts-node src/wheel-to-boat.ts",
+        "fakegame": "ts-node src/fake-game.ts",
+        "watch": "tsc --watch"
+    },
+    "keywords": [
+        "dock-your-boat",
+        "remote-control",
+        "tcp",
+        "socket"
+    ],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^20.10.0",
+        "@types/node-hid": "^1.3.4",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3"
+    },
+    "dependencies": {
+        "node-hid": "^3.3.0"
+    }
+}

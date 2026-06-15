@@ -1,278 +1,138 @@
-# Dock Your Boat - Remote Control Demo (TypeScript)
-
-Dock your boat is a boat simulation game developed with Unity3D for Windows, Mac, iOs and Android by Klaus P Kobald Gmbh, Austria.
-
-https://dock-your-boat.kobald.com/
-
-A TypeScript proof of concept demonstrating connection to the Dock Your Boat game server, receiving game data, and sending control commands.
-Feel free to use the code to create connections to customized controls.
+# Drive your boat with a Logitech steering wheel
 
-## Features
+This lets you steer your boat in the **Dock Your Boat** game using a Logitech
+**Driving Force GT** steering wheel, its pedals are not used — you control the
+boat with the wheel, the gear shifter and the buttons.
 
-- ✅ TCP socket connection to game server
-- ✅ JSON protocol implementation
-- ✅ Type-safe message handling
-- ✅ Event-driven architecture
-- ✅ Automatic reconnection
-- ✅ Comprehensive test sequence
-- ✅ Real-time data logging
-
-## Installation
-
-```bash
-# Install dependencies
-npm install
-
-## Usage
-
-# Run with default settings (localhost:2612)
-npm run dev
-
-```
+You do **not** need to be a computer person. Follow the steps below.
 
-### Custom Host/Port
-
-```bash
-# Set environment variables
-GAME_HOST=192.168.1.100 GAME_PORT=2612 npm run dev
-```
-
-## What It Does
+> 🛠️ Developer / technical details (the demo, the protocol, the API) are in
+> **[DESCRIPTION.md](DESCRIPTION.md)**.
 
-The demo automatically:
-
-1. **Connects** to the game server
-2. **Receives** and logs all incoming messages:
-   - Boat properties (engine count, thrusters, sails)
-   - Game notifications (spawned, events)
-   - Compass/autopilot display updates
-3. **Sends** a test sequence of commands:
-   - Engine on/off
-   - Rudder control (left, center, right)
-   - Throttle control (0-100%, forward and reverse)
-   - Bow thruster (left, off, right)
-   - Autopilot (on, adjust heading, off)
-   - Sail controls (main sail, genoa)
+---
 
-## Example Output
+## 1. What you need
 
-```
-╔════════════════════════════════════════════════════════╗
-║   Dock Your Boat - Remote Control Demo (TypeScript)   ║
-╚════════════════════════════════════════════════════════╝
+- ✅ The Logitech **Driving Force GT** steering wheel
+- ✅ Its **power adapter** (the black power brick that plugs into the wall) — **this is required!**
+- ✅ The **USB cable** from the wheel to your computer
+- ✅ The **Dock Your Boat** game, running on the same computer
+- ✅ A free program called **Node.js** (the setup will help you install it)
 
-Connecting to game at localhost:2612...
+> ⚠️ **The single most important thing:** the wheel MUST be plugged into its
+> power adapter. Without power it does nothing at all — no steering, no buttons.
+> When it has power and you plug it in, the wheel turns by itself fully left and
+> then right one time (a little self-test). If you see that wiggle, it's good.
 
-✓ Connected to game server
-→ SENT: {"RemoteMessenger":{"t":"J","v":{"Msg":{"Type":"Subscription","Noti":":typescript-demo"}}}}
-✓ Connected! Starting test sequence...
+---
 
-← RECV [Group 1]: {"PlayerMessenger":{"t":"J","v":{"Props":{"EngineCount":1,"HasThrusters":false,"HasLoPowerSwitch":true,"HasSails":true}}}}
-╔════════════════════════════════════════╗
-║        BOAT PROPERTIES RECEIVED        ║
-╠════════════════════════════════════════╣
-║ Engines:      1                        ║
-║ Thrusters:    No                       ║
-║ Sails:        Yes                      ║
-║ Low Power:    Yes                      ║
-╚════════════════════════════════════════╝
+## 2. One-time setup
 
-╔════════════════════════════════════════╗
-║        STARTING TEST SEQUENCE          ║
-╚════════════════════════════════════════╝
+### On a Mac
 
-🔧 Test 1: Engine Control
-   → Turning engine ON
-→ SENT: {"BoatEngineOn":{"t":"B","v":true}}
+1. Open the **Terminal** app (press `Cmd` + `Space`, type `Terminal`, press Return).
+2. In the Terminal window, type `bash` and then a **space**.
+3. Drag the file **`Install_On_Mac.sh`** into the Terminal window.
+4. Press **Return** and follow what it says.
 
-🔧 Test 2: Rudder Control
-   → Setting rudder to 50% right (0.5)
-→ SENT: {"BoatRuder":{"t":"F","v":0.5}}
-   → Setting rudder to center (0.0)
-→ SENT: {"BoatRuder":{"t":"F","v":0}}
-   → Setting rudder to 50% left (-0.5)
-→ SENT: {"BoatRuder":{"t":"F","v":-0.5}}
+### On Windows
 
-🔧 Test 3: Throttle Control
-   → Setting throttle to 25% (0.25)
-→ SENT: {"BoatThrottle0":{"t":"F","v":0.25}}
-   → Increasing throttle to 50% (0.5)
-→ SENT: {"BoatThrottle0":{"t":"F","v":0.5}}
+1. Double-click **`Install_on_Windows.bat`**.
+2. Follow what it says.
 
-← RECV [Group 1]: {"AP_display":{"t":"S","v":"270.NW.HDG"}}
-🧭 Compass: 270° NW (HDG)
+If Node.js is missing, the setup opens the download page for you. Install it
+(click the big green **LTS** button), then run the setup again.
 
-...
-```
-
-## Project Structure
+---
 
-```
-dyb-remote-demo/
-├── src/
-│   ├── types.ts          # TypeScript type definitions
-│   ├── DYBClient.ts      # Main client class
-│   └── index.ts          # Demo application
-├── dist/                 # Compiled JavaScript (generated)
-├── package.json
-├── tsconfig.json
-└── README.md
-```
-
-## API Usage
-
-### Basic Connection
-
-```typescript
-import { DYBClient } from './DYBClient';
+## 3. Start playing
 
-const USER_ID = '3e53b06574897e78ebde8d2570ef9c32';  // Your user ID
+1. Make sure the **wheel is powered** and plugged in (see the warning above).
+2. Make sure the **Dock Your Boat** game is **running** on the same computer.
+3. Start the wheel control:
+   - **Mac:** run the setup again and answer **y** when it asks "Start the wheel now?",
+     or type `npm run drive` in the Terminal.
+   - **Windows:** double-click `Install_on_Windows.bat` and answer **y**,
+     or type `npm run drive`.
 
-const client = new DYBClient({
-  host: 'localhost',
-  port: 2612,
-  autoReconnect: true,
-});
-
-client.on('connected', () => {
-  console.log('Connected!');  
-});
-
-client.connect();
-```
-
-### Sending Controls
+You'll see lines like `steer ... rudder= 35% RIGHT` scrolling by. That means it's
+working. To stop, press `Ctrl` + `C` (hold Control and press C).
 
-```typescript
-// Rudder (-1.0 to 1.0)
-client.sendRudder(0.5);  // 50% right
+---
 
-// Throttle (-1.0 to 1.0)
-client.sendThrottle(0.75);  // 75% forward
-
-// Engine on/off
-client.sendEngineState(true);
+## 4. The controls
 
-// Bow thruster (-1, 0, 1)
-client.sendBowThruster(-1);  // Left
-
-// Autopilot
-client.sendAutopilot(true);
-client.sendHeadingAdjust(10);  // +10 degrees
-
-// Sails (0.0 to 1.0)
-client.sendSailControl('Main.Size', 0.8);
-client.sendSailControl('Main.Sheet', 0.6);
-```
-
-### Receiving Events
+| What you do on the wheel                          | What happens to the boat                        |
+| ------------------------------------------------- | ----------------------------------------------- |
+| **Turn the steering wheel**                       | Steers the boat (rudder), left and right        |
+| **Gear shifter / paddle — UP**                    | Increases throttle (more forward power)         |
+| **Gear shifter / paddle — DOWN**                  | Decreases throttle (slows down, then reverse)   |
+| **X Reset button** (the one that zeroes throttle) | Gently brings **both** engines back to idle (0) |
+| **D-pad LEFT** (the little 4-way pad)             | Bow thruster pushes the nose **left**           |
+| **D-pad RIGHT**                                   | Bow thruster pushes the nose **right**          |
 
-```typescript
-// Boat properties
-client.on('boatProperties', (props) => {
-  console.log(`Engines: ${props.EngineCount}`);
-  console.log(`Has sails: ${props.HasSails}`);
-});
+How the throttle feels:
 
-// Game notifications
-client.on('gameNotification', (notification) => {
-  console.log(`${notification.Type}.${notification.Noti}`);
-});
+- A quick **tap** of the up/down shifter makes a small step.
+- **Holding** it keeps changing the throttle smoothly until you let go.
+- Both engines (for two-engine boats) always get the **same** throttle value.
+- The **reset** button slowly slides the throttle back to 0. It keeps going even
+  after you let go — and it stops the moment you touch the shifter again.
 
-// Compass display
-client.on('compassDisplay', (display) => {
-  console.log(`Compass: ${display}`);
-});
+---
 
-// All messages
-client.on('message', (message) => {
-  console.log('Received:', message);
-});
-```
+## 5. If something doesn't work
 
-## Type Safety
+**The wheel does nothing / no lines appear when I turn it**
+- Check the **power adapter** is plugged into the wall and the wheel.
+- Unplug and re-plug the wheel; watch for the left–right self-test wiggle.
 
-All messages and controls are fully typed:
+**Left and right are swapped**
+- Start it with the "invert" option:
+  - Mac: `WHEEL_INVERT=1 npm run drive`
+  - Windows: `set WHEEL_INVERT=1` then `npm run drive`
 
-```typescript
-// Type-safe control keys
-type ControlKey = 
-  | 'BoatRuder'
-  | 'BoatThrottle0'
-  | 'BoatThrottle1'
-  | 'BoatEngineOn'
-  | 'BowThruster'
-  | 'AP_active'
-  // ... etc
+**It says it can't connect to the game**
+- Make sure the game is open and running first.
+- Make sure the game and this program are on the **same computer**.
+- If the game runs on a **different** computer, start with its address:
+  - Mac: `GAME_HOST=192.168.1.50 npm run drive` (use your game PC's address)
+  - Windows: `set GAME_HOST=192.168.1.50` then `npm run drive`
 
-// Structured boat properties
-interface BoatProperties {
-  EngineCount: number;
-  HasThrusters: boolean;
-  HasLoPowerSwitch: boolean;
-  HasSails: boolean;
-}
-```
-
-## Development
-
-```bash
-# Watch mode (auto-recompile on changes)
-npm run watch
-
-# Run in development mode
-npm run dev
-
-```
-
-## Testing with Game
-
-1. **Start the game** with remote control enabled
-2. **Run the demo**:
-   ```bash
-   npm run dev
-   ```
-3. **Observe**:
-   - Connection status
-   - Incoming boat properties
-   - Test sequence execution
-   - Real-time compass updates
-
-## Troubleshooting
-
-### Cannot connect
-
-```bash
-# Check if game is running and listening on port 2612
-telnet localhost 2612
-
-# Try with explicit host
-GAME_HOST=192.168.1.100 npm run dev
-```
-
-### TypeScript errors
-
-```bash
-# Reinstall dependencies
-rm -rf node_modules package-lock.json
-npm install
-```
-
-### Port already in use
-
-The game uses port 2612 by default. Make sure:
-- Game is running
-- No firewall blocking the connection
-- Correct IP address if not localhost
-
-## Next Steps
-
-This demo can be extended to:
-
-- Build a web-based controller UI
-- Add joystick/gamepad support
-- Create a mobile app interface
-- Implement data logging and replay
-- Add virtual instruments (speed, compass, etc.)
-
-
+**On Windows: a blue "Windows protected your PC" box appears**
+- That can happen for `.bat` files. Click **More info → Run anyway**.
+
+**On Windows: the wheel still does nothing even with power**
+- If you have **Logitech G HUB** or **Logitech Gaming Software** installed, close
+  it completely (right-click its tray icon → Quit). It can take exclusive control
+  of the wheel and block this program.
+
+**On Windows: the firewall (allowing the connection)**
+
+The wheel program talks to the game over a network port (2612). Windows may step
+in the first time:
+
+- The **first time you open Dock Your Boat**, Windows may show a box titled
+  *"Windows Defender Firewall has blocked some features of this app."* This is for
+  **Dock Your Boat**, which needs to *receive* the connection. Tick the box for
+  **Private networks** and click **Allow access**. If you click "Cancel" by
+  mistake, the wheel won't be able to connect.
+- You may see the **same box for "Node.js"** (the program running the wheel).
+  Click **Allow access** for that too.
+- If you already clicked Cancel before: open **Windows Security → Firewall &
+  network protection → Allow an app through firewall**, find **Dock Your Boat**
+  (and **Node.js**), and make sure they are checked.
+
+> When the game and the wheel are on the **same computer**, this usually just
+> works, but allow the boxes if they appear. If the game runs on a **different
+> computer**, the firewall on *that* computer must allow incoming connections on
+> port **2612** — allowing Dock Your Boat through the firewall (above) does this.
+
+---
+
+## 6. Good to know
+
+- This works the same on **Mac** and **Windows**.
+- You can leave the program running; it reconnects automatically if the game
+  restarts.
+- It only sends updates about **10 times per second**, so it won't flood the game.

@@ -49,7 +49,7 @@ echo ""
 echo "Setup complete!  You are ready to use the wheel."
 echo ""
 echo "To start the wheel now, type:  npm run drive"
-echo "(See LOGITECH_WHEEL.md for the full guide.)"
+echo "(See README.md for the full guide.)"
 echo ""
 
 # 3. Offer to start right away.

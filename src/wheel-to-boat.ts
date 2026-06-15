@@ -67,11 +67,21 @@ function main(): void {
     const device = new HID.HID(dev.path);
 
     // Disable the auto-center spring so the wheel turns freely (f5 command).
-    try {
-        device.write([0x00, 0xf5, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
-    } catch (err) {
-        console.error('Could not disable auto-center:', (err as Error).message);
-    }
+    // A single write right after open is unreliable: the device may not be ready
+    // yet, and write() succeeding does not guarantee the wheel applied it. So we
+    // send it now, retry shortly after, and re-send periodically in case the
+    // wheel ever re-engages the spring.
+    const disableAutoCenter = () => {
+        try {
+            device.write([0x00, 0xf5, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
+        } catch (err) {
+            console.error('Could not disable auto-center:', (err as Error).message);
+        }
+    };
+    disableAutoCenter();
+    setTimeout(disableAutoCenter, 300);
+    setTimeout(disableAutoCenter, 1000);
+    const autoCenterTimer = setInterval(disableAutoCenter, 5000);
 
     const client = new DYBClient({ host: GAME_HOST, port: GAME_PORT, autoReconnect: true });
     // Without an 'error' listener, EventEmitter throws and crashes the process
@@ -207,6 +217,7 @@ function main(): void {
     const shutdown = () => {
         console.log('\nShutting down...');
         clearInterval(sendTimer);
+        clearInterval(autoCenterTimer);
         device.close();
         client.disconnect();
         process.exit(0);
